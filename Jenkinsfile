@@ -15,14 +15,11 @@ pipeline {
             }
         }
 
-        stage('Deploy Container') {
+        stage('Deploy to EKS') {
             steps {
-                sh '''
-                docker rm -f trend-container || true
-                docker run -d -p 8081:80 --name trend-container prateek0017/trend-app:latest
-                '''
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
             }
         }
-
     }
 }
